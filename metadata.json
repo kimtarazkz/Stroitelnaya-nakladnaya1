@@ -1,0 +1,10 @@
+{
+  "name": "BuildInvoice Telegram Bot",
+  "description": "Automate construction supply invoicing with custom discount encryption, automated numbering, and seamless Google Sheets inventory management.",
+  "requestFramePermissions": [
+    "microphone"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
