@@ -440,6 +440,11 @@ export class TelegramBotService {
       const transcribed = await this.transcribeVoice(fileId, mimeType);
       if (transcribed && transcribed.text) {
         textToParse = transcribed.text;
+        await this.telegramCall('sendMessage', {
+          chat_id: chatId,
+          text: `🎙 <b>Распознано:</b> <i>«${escapeHtml(transcribed.text)}»</i>`,
+          parse_mode: 'HTML',
+        });
       } else {
         await this.telegramCall('sendMessage', {
           chat_id: chatId,
@@ -734,7 +739,8 @@ export class TelegramBotService {
           continue;
         }
 
-        const detailsMatch = line.match(/└\s*(\d+(?:[.,]\d+)?)\s*([a-zA-Zа-яА-ЯёЁ.]+)\s*×\s*([\d\s]+)\s*₸/);
+        const cleanLine = line.replace(/[\u00A0\u202F]/g, ' ');
+        const detailsMatch = cleanLine.match(/└\s*(\d+(?:[.,]\d+)?)\s*([a-zA-Zа-яА-ЯёЁ.]+)\s*×\s*([\d\s]+)\s*₸/);
         if (detailsMatch && currentName) {
           const qty = parseFloat(detailsMatch[1].replace(',', '.'));
           const unit = detailsMatch[2].trim();

@@ -404,20 +404,26 @@ export function matchCatalogItem(
       score += 25;
     }
 
-    if (score >= 12) {
+    if (score >= 25) {
       scoredItems.push({ item, score });
     }
   }
 
   scoredItems.sort((a, b) => b.score - a.score);
 
-  if (scoredItems.length === 0) {
+  if (scoredItems.length === 0 || scoredItems[0].score < 35) {
     return {
       item: null,
       confidence: 0,
       isNotFound: true,
       isAmbiguous: false,
-      candidates: [],
+      candidates: scoredItems.slice(0, 5).map((s) => ({
+        id: s.item.id,
+        sku: s.item.sku,
+        name: s.item.name,
+        price: s.item.price,
+        unit: s.item.unit,
+      })),
     };
   }
 
